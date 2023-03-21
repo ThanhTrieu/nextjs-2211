@@ -1,38 +1,25 @@
 import LayoutPage from "@/components/LayoutPage";
 import { fetchDataProductsByPage } from "@/src/services/products";
-import { Row, Col, Card } from "antd";
+import ListProducts from "@/components/products/ListProducts";
 
-const { Meta } = Card;
-
-function Home({ data }) {
-  const { products, total, skip, limit } = data;
-
+function Home({ productsData }) {
   return (
     <LayoutPage>
-      <Row>
-        {products.map((item,index) => (
-          <Col span={6} key={index}>
-            <Card
-              hoverable
-              style={{
-                width: 240,
-                marginBottom: 15,
-                marginLeft: 5
-              }}
-              cover={<img alt={item.title} src={item.thumbnail} />}
-            >
-              <Meta title={item.title} />
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      <ListProducts productsData={productsData}/>
     </LayoutPage>
   )
 }
-export async function getServerSideProps() {
-  const data = await fetchDataProductsByPage(1, 10);
+export async function getServerSideProps({ query }) {
+  let page = query.page || 1;
+  let skip = query.skip || 10;
+  let productsData = null;
+  try {
+    productsData = await fetchDataProductsByPage(page, skip);
+  } catch (err) {
+    productsData = { error: { message:  err} }
+  }
   return {
-    props: { data }
+    props: { productsData }
   }
 }
 

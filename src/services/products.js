@@ -5,3 +5,8 @@ export const fetchDataProductsByPage = async (page = 1, limit = 10) => {
     const response = await requestClient.get(`/products?limit=${limit}&skip=${start}`);
     return await response.data;
 }
+
+export const fetchDataProductsById = async (id) => {
+    const response = await requestClient.get(`/products/${id}`);
+    return await response.data;
+}
