@@ -6,6 +6,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { SessionProvider } from "next-auth/react";
 
 import 'antd/dist/reset.css'
 import 'nprogress/nprogress.css'
@@ -13,7 +14,7 @@ import '@/styles/globals.css'
 
 import NProgress from 'nprogress'
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps : { session, ...pageProps } }) {
   const [queryClient] = useState(() => new QueryClient())
 
   useEffect(() => {
@@ -34,7 +35,9 @@ export default function App({ Component, pageProps }) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
       </Hydrate>
       <ReactQueryDevtools/>
     </QueryClientProvider>
