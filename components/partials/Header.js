@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 const { Header } = Layout;
 const items = [
     {label: <Link href="/">Home</Link>, key: '/'},
-    {label: <Link href="/cart"> Cart</Link>, key: '/cart'}
+    {label: <a href="/#/cart"> Cart</a>, key: '/#/cart'}
 ];
 
 export default function HeaderComponent(){
